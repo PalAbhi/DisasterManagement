@@ -1,0 +1,105 @@
+#This prg will be called after we have final binned image folder.
+
+#The argument of command line will be name of final sorted image folder.
+
+import os
+import sys
+import argparse
+
+#Writes Title PArt of a HTML file
+
+def write_title(open_file):
+	open_file.write("<head>\n\
+        <style>\n\
+        body {\n\
+        background-color: rgb(227,227,180)\n\
+        }\n\
+        h1 {\n\
+        color: white;\n\
+        text-align: center;\n\
+        }\n\
+        p{\n\
+        font-family: verdana;\n\
+        font-size: 12px;\n\
+        }\n\
+        </style>\n\
+        </head>)")
+        return
+
+
+
+#Creates A File FOr Every Directory In DAta Set and let write_html_file write it
+
+#make_dir_indexTakes processed folder name as argument and it makes a folder named "$processedfolderhtml_container" which includes a html file 
+#for every folder inside processed folder
+
+#File within this folder has HTML script to show image of its respctive folder in processed folder
+#Takes processed folder name as argument i.e imfdir has value of processed folder
+
+def mk_dir_html_container(imgdir):                
+	container_name="outbaselink/"+imgdir+"html_container"
+        os.mkdir(container_name,0755)
+        dirs=os.listdir("outbaselink/"+imgdir)
+        
+        for dir in dirs:
+                # full_dir_path=os.getcwd()+"/"+imgdir+"/"+dir
+                full_dir_path=imgdir+"/"+dir
+                dir_html_files=container_name+"/"+dir+".html"
+                of=open(dir_html_files,"w")
+                of.write("<html>\n")
+                write_title(of)
+                of.write("<body>\n")
+                write_html_file(full_dir_path,of)
+                of.write("</body>\n</html>\n")
+                of.close()
+        return;
+#It is called by "mk_dir_html_container()" with arg1=name of subfolder in processed folder & arg2=a file object for files in folder made by #caller i.e mk_dir_html_container()
+#write_html_file() writes respective files in folder created by mk_dir_html_container 
+#this file has HTML script to show image of its respctive folder in processed folder
+
+
+def write_html_file(DirPath,of):
+	dirs=os.listdir("outbaselink/"+DirPath)
+        for file in dirs:
+        	filepath="../"+DirPath+"/"+file
+                of.write("<a href=\""+filepath+"\""+"><img src=\""+filepath+"\""+" height=250 width=250></a>\n")
+           
+        return;
+
+
+# create a parser object
+parser = argparse.ArgumentParser()
+
+# add argument
+parser.add_argument("ad", nargs = 1)
+
+# parse the arguments from standard input
+args = parser.parse_args()
+
+# check if add argument has any input data.
+# If it has, then print sum of the given numbers
+processed_folder_name=args.ad[0]
+
+
+#It makes a HTML Page To be thrown to Browser as soon as processed image folder is created and respective HTML script has been wrriten on #processed folder...ie after calling "mk_dir_html_container()"
+
+#It contains the link to the files in folder made by "mk_dir_html_container()"
+
+def make_dir_index(DirName):  
+	index=open("outbaselink/"+DirName+"_index.html","w")
+        index.write("<html>\n")
+        write_title(index)
+	index.write("<body>\n")
+        refpath=DirName+"html_container"
+        dirs=os.listdir("outbaselink/"+DirName)
+        for dir in dirs:
+        	index.write("<a href=\""+refpath+"/"+dir+".html"+"\""+">"+dir+"</a>\n")
+	index.write("</body>\n")
+	index.write("</html>\n")
+        index.close()
+        return;     
+
+
+mk_dir_html_container(processed_folder_name)  #mk_dir_html_container("testfolder")#Replace it by mk_dir_html_container(processed_folder)
+make_dir_index(processed_folder_name)  #make_dir_index("testfolder")#Replace it by  make_dir_index(processed_folder)
+
