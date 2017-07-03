@@ -27,29 +27,51 @@
         font-family: 'Raleway', sans-serif;
     }
     .tweet{
-        padding:5px;
+        //padding-left:25px;
     }
     .tweet:hover{
         background:lightgray;
     }
+    .node{
+        padding-left: :50px;
+        //background:red;
+        //border:1px solid black;
+        height:15vmin;
+        //width: 100%;
+    }
+    .node:hover{
+        background:lightgray;
+    }
+    .nimg{
+        width:80%;
+        height:50dip;
+        padding-bottom: 10px;
+        padding-left: 30dip;
+    }
+	
 	</style>
 </head>
 <body>
     <div class="container-fluid">
-    <div class="row" style="background:black">
-    <div class="col-md-3"></div>
-    <div class="col-xs-12 col-md-6">
-    <img src='databaselink/<?php echo $dataset."/".$image; ?>' style="width:100%;height:60vmin;">
+	    <div class="row" style="background:yellow">
+		    <div class="col-md-3"></div>
+			<div class="col-xs-12 col-md-6">
+			  	<img src='databaselink/<?php echo $dataset."/".$image; ?>' style="width:100%;height:60vmin;">
+			</div>
+		</div>
+	    <div class="col-md-3"></div>
+	</div>
+	<div class="container-fluid">
+	    <a><h4 id="tweetHeading">Tweets</h4></a>
+	</div>
+	    <!--div class="col-xs-6 col-md-4" id="image">
+			  	<img src='databaselink/<?php echo $dataset."/".$image; ?>' class="img-circle" style="height: 15vmin">
+		</div-->
+	<div id="tweetview" class="row">
     </div>
-    </div>
-    <div class="col-md-3"></div>
-    </div>
-    <div class="container">
-    <a><h4 id="tweetHeading">Tweets</h4></a>
-    <div id="tweetview" class="row">
-    </div>
-    </div>
-</body>
+    
+	</body>
+</html>
 
 <script>
 
@@ -59,13 +81,44 @@ var timestamp = "0";
 var tweets = [];
 
 
-function createNode(id,text){  
+function createNode(id,text,image){
+	var div = document.createElement("div");
+	div.setAttribute("class","col-sm-12 col-md-12 node");
+	var div2 = document.createElement("div");
+	div2.setAttribute("class","col-sm-6 col-md-3");
+	var img = document.createElement("img");
+	img.setAttribute("src", "databaselink/<?php echo $dataset."/"; ?>"+image);
+	//img.setAttribute("height", "10%");
+	//img.setAttribute("width", "100%");
+	img.setAttribute("class", "img-rounded nimg");
+	// //img.setAttribute("class", "col-xs-6 col-md-4");
+	//img.setAttribute("alt", image);
+	var div3 = document.createElement("div");
+	div3.setAttribute("class","col-sm-6 col-md-9");   	
 	var tweet = document.createElement("p");
 	tweet.setAttribute("id",id);
 	tweet.setAttribute("class","tweet");
+	//tweet.setAttribute("class","col-xs-6 col-md-8");
 	var node = document.createTextNode(text);
 	tweet.appendChild(node);
-	return tweet;
+	div3.appendChild(tweet);
+	div2.appendChild(img);
+	div.appendChild(div2);
+	div.appendChild(div3);
+	
+	//div.setAttribute("onClick","openInNewTab(showbucket.php?dataset=<?php echo $dataset ?>&bucket="+id+"&image="+image+")");
+	// var link = document.createElement("a");
+	// link.setAttribute("href", "showbucket.php?dataset=<?php echo $dataset ?>&bucket="+id+"&image="+image);
+	// link.appendChild(div);
+	//return link;
+
+
+
+	// tweet.setAttribute("id",id);
+	// tweet.setAttribute("class","tweet");
+	// var node = document.createTextNode(text);
+	// tweet.appendChild(node);
+	return div;
 }
 
 function clearNode(element){
@@ -93,6 +146,7 @@ function loadData(){
 				var obj = new Object();
 				obj["ID"] = val.ID;	//Bucket ID
 				obj["Text"] = val.Text;
+				obj["Image"] = val.Image;
 				tweets.push(obj);
 			}
 		});
@@ -101,10 +155,20 @@ function loadData(){
 		clearNode(tweetview);
 		var i;
 		for(i=tweets.length-1;i>=0;i--){
-			node = createNode(tweets[i]["ID"],tweets[i]["Text"]);
+		// 	var node = document.createElement("div");
+			node = createNode(tweets[i]["ID"],tweets[i]["Text"],tweets[i]["Image"]);
 			tweetview.appendChild(node);
 		}
 		
+
+		// var listView = document.getElementById("clusterView");
+		// clearNode(clusterView);
+		// var i;
+		// console.log(nobjects.length+"/"+objectLimit);
+		// for(i=0;i<nobjects.length && i<objectLimit;i++){
+		// 	node = createNode(nobjects[i]["ID"],nobjects[i]["image"],nobjects[i]["tweets"]);
+		// 	clusterView.appendChild(node);
+		// }
 		
         document.getElementById("tweetHeading").innerHTML = tweets.length+" tweets found";
 	}); 

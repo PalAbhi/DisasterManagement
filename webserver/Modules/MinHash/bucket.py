@@ -4,7 +4,7 @@ from decimal import Decimal
 from os.path import basename
 import re
 import json
-
+import MySQLdb
 
 class Bucket:
 	'Tuple of signature, image count and co-ordinates'
@@ -43,6 +43,7 @@ class Bucket:
 		self.finalised = False
 		self.image_list.append(filename)
 		self.size+=1
+		#print filename
 		#Try to find the tweet
 		self.loadTweets(filename)
 		#In case location is missing from bucket try to retrive from a duplicate
@@ -86,15 +87,25 @@ class Bucket:
 	
 	def loadTweets(self,filename):
 		if Bucket.TWEETS is None : return
+		#print filename
 		for line in Bucket.TWEETS:
 			#print line
 			data = json.loads(line)
 			if data["media"]==filename:
+				#print 'Ok'
+				tweetid = data["tweetid"]
+				print tweetid
 				text = data["text"][:256]
 				text = text.encode('ascii','ignore')
-				Bucket.CURSOR.execute("INSERT INTO `"+Bucket.DATASET+"` (`BID`, `Text`, `UTime`) "\
-					+"VALUES (%s,%s, CURRENT_TIMESTAMP)",(self.bid,text))
-	
+				#tweetid = tweetid.encode('ascii','ignore')
+				try:
+					Bucket.CURSOR.execute("INSERT INTO `"+Bucket.DATASET+"` (`BID`, `Text`, `TweetID` , `Image` , `UTime`) "\
+					+"VALUES (%s,%s,%s,%s, CURRENT_TIMESTAMP)",(self.bid,text,tweetid,filename))
+				except(MySQLdb.Error, MySQLdb.Warning) as e:
+					print 'Did not Happen'
+					#print(e)
+        			#return None
+
 	def getCoordinates(self):
 		return (self.Lat,self.Lon)
 		

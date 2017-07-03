@@ -13,7 +13,7 @@
 	    die("Connection failed: " . $conn->connect_error);
 	} 
 	
-	$sql = "SELECT ID,Text FROM `".$_GET["tablename"]."` WHERE BID=".$_GET["BID"]." AND UTime>\"".$_GET["timestamp"]."\"";
+	$sql = "SELECT TweetID,Text,Image FROM `".$_GET["tablename"]."` WHERE BID=".$_GET["BID"]." AND UTime>\"".$_GET["timestamp"]."\"";
 	$result = $conn->query($sql);
 
 	$data = array();
@@ -24,8 +24,9 @@
 	    $i = 1;
 	    while($row = $result->fetch_assoc()) {
 			$data[$i] = array();
-			$data[$i]["ID"] = $row["ID"];
-			$data[$i]["Text"] = $row["Text"];	
+			$data[$i]["ID"] = $row["TweetID"];
+			$data[$i]["Text"] = $row["Text"];
+			$data[$i]["Image"] = $row["Image"];	
 			$i++;
 	    }
 	}

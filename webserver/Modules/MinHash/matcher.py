@@ -68,7 +68,8 @@ except:
 
 
 query2 = "CREATE TABLE `tweetbase`.`"+sys.argv[1]+"` ( `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT , `BID` INT UNSIGNED NOT NULL ,"\
-	+" `Text` VARCHAR(256) NOT NULL , `UTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`ID`)) ENGINE = InnoDB;"
+	+" `Text` VARCHAR(256) NOT NULL ,`TweetID` BIGINT NOT NULL, `Image` VARCHAR(64) NOT NULL ,`UTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,"\
+	+" PRIMARY KEY (`ID`)) ENGINE = InnoDB;"
 try:
 	cursor2.execute(query2);
 except:
@@ -171,7 +172,7 @@ for fileindex in range(1, len(onlyfiles)):
 		db2.commit()
 	#Code prog tells server about the progress (mind the dot)
 	print "prog.",(fileindex*100)/(len(onlyfiles)-1)
-	print (str(fileindex)+".Reading file '"+currentFile)+"'"
+	print (str(fileindex)+".Reading file'"+currentFile)+"'"
 	sys.stdout.flush()
 		
 	
