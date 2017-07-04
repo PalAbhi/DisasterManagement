@@ -57,6 +57,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
     private static String url = "http://10.2.1.100/getLocalTables.php";
     //ArrayList<ListItem> disasterList;
     ArrayList<HashMap<String, String>> disList;
+    String[] names;
+    //disList.clear();
     //public SimpleTarget<Bitmap> bitmap=null;
     //ArrayList<Bitmap> bitmapArray;
     //ImageView image;
@@ -91,15 +94,15 @@ public class MainActivity extends AppCompatActivity {
 //    private static Boolean runornot = false;
     Handler handler;
     Thread feedthread;
-
+    ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        //disasterList = new ArrayList<>();
+        names=new String[10];
+         //disasterList = new ArrayList<>();
         //bitmapArray = new ArrayList<>();
         disList = new ArrayList<>();
         lv = (ListView) findViewById(R.id.list);
@@ -167,20 +170,28 @@ public class MainActivity extends AppCompatActivity {
                     // Getting JSON Array node
                     //JSONArray disasters = jsonObj.getJSONArray("disaster");
                     JSONArray dissy = new JSONArray(jsonStr);
-                    HashMap<String, String> d = new HashMap<>();
+
+//                    d.put("name", "Hello");
+//                    d.put("count", count.toString());
+                    if(count>0){
+                        disList.clear();
+                        count=0;
+                    }
+                    //disList.add(0,d);
+                    //disList.add("name","Hello");
                     for (int i = 0; i < dissy.length(); i++) {
+                        HashMap<String, String> d = new HashMap<>();
                         //JSONObject c = dissy.getJSONObject(i);
                         //String name = c.getString("name");
-                        if(count>0){
-                            disList.clear();
-                            count--;
-                        }
+                        String name=dissy.get(i).toString();
                         d.put("name", dissy.get(i).toString());
                         d.put("count", count.toString());
+                        //d.put("name",name);
+                        //disList.add(d);
+                        disList.add(i,d);
+                        //names[i]=name;
+                        //Log.e(TAG, String.valueOf(disList.get(i)));
                         count++;
-
-                        disList.add(d);
-
                     }
                     // looping through All Contacts
 //                    for (int i = 0; i < disasters.length(); i++) {
@@ -252,6 +263,12 @@ public class MainActivity extends AppCompatActivity {
              * */
             //isLoaded = true;
             //  finalcall();
+//            adapter= new ArrayAdapter<String>(getApplicationContext(),
+//                    R.layout.list_item,names);
+            //ListView listView = (ListView) findViewById(R.id.mobile_list);
+//            lv.setAdapter(adapter);
+            //ArrayList<HashMap<String,String>> disasters=new ArrayList<>();
+            //disasters=disList;
             ListAdapter adapter = new SimpleAdapter(
                     MainActivity.this, disList,
                     R.layout.list_item, new String[]{"name"}, new int[]{R.id.name});
