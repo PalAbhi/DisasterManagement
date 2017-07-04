@@ -256,19 +256,13 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-//            if (pDialog.isShowing())
-//                pDialog.dismiss();
+            if (pDialog.isShowing())
+                pDialog.dismiss();
             /**
              * Updating parsed JSON data into ListView
              * */
             //isLoaded = true;
             //  finalcall();
-//            adapter= new ArrayAdapter<String>(getApplicationContext(),
-//                    R.layout.list_item,names);
-            //ListView listView = (ListView) findViewById(R.id.mobile_list);
-//            lv.setAdapter(adapter);
-            //ArrayList<HashMap<String,String>> disasters=new ArrayList<>();
-            //disasters=disList;
             ListAdapter adapter = new SimpleAdapter(
                     MainActivity.this, disList,
                     R.layout.list_item, new String[]{"name"}, new int[]{R.id.name});
