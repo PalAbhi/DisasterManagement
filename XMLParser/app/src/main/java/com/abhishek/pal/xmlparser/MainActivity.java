@@ -286,10 +286,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 //public void finalcall(){
-//    //lv.setAdapter(new CustomListAdapter(this, disasterList,bitmapArray));
-////    ListAdapter adapter = new SimpleAdapter(
-////            MainActivity.this, disList,
-////            R.layout.list_item, new String[]{"tweet"}, new int[]{R.id.name});
+// lv.setAdapter(new CustomListAdapter(this, disasterList,bitmapArray));
+//    ListAdapter adapter = new SimpleAdapter(
+//            MainActivity.this, disList,
+//            R.layout.list_item, new String[]{"tweet"}, new int[]{R.id.name});
 //
 //    lv.setAdapter(adapter);
 //
