@@ -273,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this, disList,
                     R.layout.list_item, new String[]{"name"}, new int[]{R.id.name});
 
+
             lv.setAdapter(adapter);
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
