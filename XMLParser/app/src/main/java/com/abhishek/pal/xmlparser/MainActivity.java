@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 ////            MainActivity.this, disList,
 ////            R.layout.list_item, new String[]{"tweet"}, new int[]{R.id.name});
 //
-////    lv.setAdapter(adapter);
+//    lv.setAdapter(adapter);
 //
 //    lv.setAdapter((ListAdapter) disList);
 //    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
