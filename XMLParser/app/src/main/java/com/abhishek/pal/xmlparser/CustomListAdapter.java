@@ -1,7 +1,6 @@
 package com.abhishek.pal.xmlparser;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +18,13 @@ import java.util.ArrayList;
  */
 public class CustomListAdapter extends BaseAdapter {
     private ArrayList<ListItem> listData;
-    public ArrayList<Bitmap> bitmap;
+    //public ArrayList<Bitmap> bitmap;
     private LayoutInflater layoutInflater;
     private Context mContext;
 
-    public CustomListAdapter(Context context, ArrayList<ListItem> listData, ArrayList<Bitmap> bitmaps) {
+    public CustomListAdapter(Context context, ArrayList<ListItem> listData) {
         this.listData = listData;
-        this.bitmap=bitmaps;
+        //this.bitmap=bitmaps;
         layoutInflater = LayoutInflater.from(context);
         mContext=context;
     }
@@ -48,12 +47,12 @@ public class CustomListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_item, null);
+            convertView = layoutInflater.inflate(R.layout.list_item2, null);
             holder = new ViewHolder();
-            holder.headlineView = (TextView) convertView.findViewById(R.id.name);
+            holder.headlineView = (TextView) convertView.findViewById(R.id.tweet);
             //holder.noofImages = (TextView) convertView.findViewById(R.id.imagedata);
             //holder.reportedDateView = (TextView) convertView.findViewById(R.id.date);
-            //holder.imageView = (ImageView) convertView.findViewById(R.id.image);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.image);
             convertView.setTag(holder);
 
         } else {
@@ -63,8 +62,8 @@ public class CustomListAdapter extends BaseAdapter {
         ListItem newsItem = listData.get(position);
 
         holder.headlineView.setText(newsItem.getName());
-        holder.reportedDateView.setText(newsItem.getDate());
-        holder.noofImages.setText(newsItem.getNo_of_img());
+        //holder.reportedDateView.setText(newsItem.getDate());
+        //holder.noofImages.setText(newsItem.getNo_of_img());
 
         if (holder.imageView != null) {
             //new ImageDownloaderTask(holder.imageView).execute(newsItem.getUrl());
@@ -82,8 +81,8 @@ public class CustomListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView headlineView;
-        TextView noofImages;
-        TextView reportedDateView;
+        //TextView noofImages;
+        //TextView reportedDateView;
         ImageView imageView;
     }
 }

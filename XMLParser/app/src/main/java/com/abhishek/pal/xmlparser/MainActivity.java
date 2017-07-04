@@ -57,7 +57,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -94,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
 //    private static Boolean runornot = false;
     Handler handler;
     Thread feedthread;
-    ArrayAdapter adapter;
+    //ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        names=new String[10];
+        //names=new String[10];
          //disasterList = new ArrayList<>();
         //bitmapArray = new ArrayList<>();
         disList = new ArrayList<>();
@@ -149,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
             pDialog = new ProgressDialog(MainActivity.this);
             pDialog.setMessage("Please wait while we fetch data from the Server...");
             pDialog.setCancelable(false);
-            //pDialog.show();
-            //isLoaded = false;
+            pDialog.show();
 
         }
 
