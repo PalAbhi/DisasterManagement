@@ -6,9 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +36,7 @@ public class DetailsActivity2 extends AppCompatActivity {
     ImageView imageView;
     private ListView lv;
     ArrayList<HashMap<String, String>> tweetlist;
+    ArrayList<ListItem> tweets;
 //    String url = "https://abhipal1997.000webhostapp.com/Calamities/Event1/f1/tweets.json";
     String url = "http://10.2.1.100/";
     String event,id,image;
@@ -54,6 +53,7 @@ public class DetailsActivity2 extends AppCompatActivity {
         Glide.with(this).load(url+"databaselink/"+event+"/"+image).into(imageView);
         lv = (ListView) findViewById(R.id.title);
         tweetlist = new ArrayList<>();
+        tweets = new ArrayList<>();
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         new GetTweets().execute();
@@ -91,22 +91,22 @@ public class DetailsActivity2 extends AppCompatActivity {
                             Log.d(TAG,jsonObject.getString("ID"));
                             Log.d(TAG,jsonObject.getString("Text"));
                             String name = jsonObject.getString("ID");
-//
+                            String image = jsonObject.getString("Image");
                             String imagedata = jsonObject.getString("Text");
-//
-//                        // tmp hash map for single contact
+                            ListItem tweet =new ListItem();
+                            tweet.setUrl("http://10.2.1.100/databaselink/"+event+"/"+image);
+                            tweet.setName(imagedata);
+                            tweets.add(tweet);
+                            //tmp hash map for single contact
                             HashMap<String, String> disaster = new HashMap<String, String>();
                             //String j=name;
 
-                        //j= new StringBuilder().append((String) k).append(j).toString();
+                            //j= new StringBuilder().append((String) k).append(j).toString();
                             disaster.put("text", imagedata);
                             count++;
                             disaster.put("tweets", count.toString()+". "+imagedata);
-                        // adding contact to contact list
-                        tweetlist.add(disaster);
-//
-
-
+                            // adding contact to contact list
+                            tweetlist.add(disaster);
                         }
                     } catch (final JSONException e) {
                         Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -138,76 +138,6 @@ public class DetailsActivity2 extends AppCompatActivity {
 
                 return null;
             }
-
-
-//                HttpHandler sh = new HttpHandler();
-//
-//            // Making a request to url and getting response
-//            String jsonStr = null;
-//
-//                jsonStr = sh.makeServiceCall(url);
-//
-//            Log.e(TAG, "Response from url: " + jsonStr);
-//
-//            if (jsonStr != null) {
-//                try {
-//
-//                    JSONObject jsonObj = new JSONObject(jsonStr);
-//
-//                    // Getting JSON Array node
-//                    JSONArray disasters = jsonObj.getJSONArray("tweets");
-//
-//                    // looping through All Contacts
-//                    for (int i = 0; i < disasters.length(); i++) {
-//                        JSONObject c = disasters.getJSONObject(i);
-//
-////                        //String id = c.getString("id");
-//                        String name = c.getString("id");
-//
-//                        String imagedata = c.getString("tweet");
-////
-////                        // tmp hash map for single contact
-//                        HashMap<String, String> disaster = new HashMap<String, String>();
-//                        String j=name;
-//
-//                        //j= new StringBuilder().append((String) k).append(j).toString();
-//                        disaster.put("image", name);
-//                        count++;
-//                        disaster.put("tweet", count.toString()+". "+imagedata);
-//                        // adding contact to contact list
-//                        tweetlist.add(disaster);
-//                    }
-//                } catch (final JSONException e) {
-//                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Json parsing error: " + e.getMessage(),
-//                                    Toast.LENGTH_LONG)
-//                                    .show();
-//                        }
-//                    });
-//
-//                }
-//            } else {
-//
-//                Log.e(TAG, "Couldn't get json from server.");
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(getApplicationContext(),
-//                                "Couldn't get json from server. Check LogCat for possible errors!",
-//                                Toast.LENGTH_LONG)
-//                                .show();
-//                    }
-//                });
-//
-//            }
-//
-//
-//            return null;
-//        }
 
 
         public String makeServiceCall(String reqUrl, String[] data,int noofdata) throws IOException {
@@ -295,11 +225,17 @@ public class DetailsActivity2 extends AppCompatActivity {
             /**
              * Updating parsed JSON data into ListView
              * */
-            ListAdapter adapter = new SimpleAdapter(
-                    DetailsActivity2.this, tweetlist,
-                    R.layout.list_item2, new String[]{"text"}, new int[]{R.id.tweet});
+//            ListAdapter adapter = new SimpleAdapter(
+//                    DetailsActivity2.this, tweetlist,
+//                    R.layout.list_item2, new String[]{"text"}, new int[]{R.id.tweet});
+//
+//            lv.setAdapter(adapter);
 
-            lv.setAdapter(adapter);
+            lv.setAdapter(new CustomListAdapter(getApplicationContext(), tweets));
+
+
+
+
             cancel(true);
         }
 
